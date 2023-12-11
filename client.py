@@ -25,7 +25,7 @@ class Client:
     # Instance method
     def init_socket(self):
         this_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        this_address = ("152.3.52.38", self.thisport)  # may need change
+        this_address = ("0.0.0.0", self.thisport)  # may need change
         this_socket.bind(this_address)
         this_socket.listen(1000)
         return this_socket
