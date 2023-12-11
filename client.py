@@ -62,14 +62,14 @@ class Client:
     def start_peer_connection_server(self):
         thisserverside=self.init_socket()
         print("bind sucesss!")
+        print("IN Start_peer_connection_server")
         while True:
             peer_socket,peer_addr=thisserverside.accept()
-            print("IN Start_peer_connection_server")
             print(peer_addr)
             with self.lock:
                 self.connected_addr(peer_addr)
     def start_peer_connection_client(self):
-       
+       print("IN Start_peer_connection_client")
        while True:
         for neighbor in self.neighbors:
             if neighbor[0]!=self.thisip:
