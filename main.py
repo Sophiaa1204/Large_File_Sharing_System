@@ -9,31 +9,24 @@ import os
 global socket_array
 global processed_array
 
-def get_connections():
-           return processed_array
+socket_array = []
+processed_array=[]
 
-if __name__ == '__main__':
-    # socket_array = []
-    # processed_array=[]
-    if len(sys.argv) == 1:  # The code for server side
-        socket_array = []
-        processed_array=[]
-
-        def handle_connection(server_socket):
-            client_socket_dic = []  # record ip and port only,through recv from client,which is ip port
-            lock = threading.Lock()
-            while True:
-                print("Waiting for a connection...")
-                client_socket, client_address = server_socket.accept()
-                socket_array.append(client_socket)  # remeber all the socket
-                client_info_str = client_socket.recv(1024)
-                print(client_info_str)
-                client_info_str = pickle.loads(client_info_str)
-                client_info_list = client_info_str.split(" ")
-                client_ip = client_info_list[0]
-                client_port = int(client_info_list[1])
-                client_socket_dic.append([client_ip, client_port])
-                with lock:
+def handle_connection(server_socket):
+    client_socket_dic = []  # record ip and port only,through recv from client,which is ip port
+    lock = threading.Lock()
+    while True:
+        print("Waiting for a connection...")
+        client_socket, client_address = server_socket.accept()
+        socket_array.append(client_socket)  # remeber all the socket
+        client_info_str = client_socket.recv(1024)
+        print(client_info_str)
+        client_info_str = pickle.loads(client_info_str)
+        client_info_list = client_info_str.split(" ")
+        client_ip = client_info_list[0]
+        client_port = int(client_info_list[1])
+        client_socket_dic.append([client_ip, client_port])
+        with lock:
                     for socket in socket_array:
                         socket.send(pickle.dumps(client_socket_dic))
                     try:
@@ -51,6 +44,13 @@ if __name__ == '__main__':
                     except:
                        server_socket.close()
 
+def get_connections():
+           return processed_array
+
+if __name__ == '__main__':
+    # socket_array = []
+    # processed_array=[]
+    if len(sys.argv) == 1:  # The code for server side
 
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_address = ('67.159.89.70', 12345)  # may need change
