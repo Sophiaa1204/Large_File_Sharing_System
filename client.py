@@ -67,10 +67,12 @@ class Client:
        while True:
         for neighbor in self.neighbors:
             if neighbor[0]!=self.thisip:
-               if connected_addr.count(neighbor[0])==0:
-                 neighborsocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                 neighborsocket.connect((neighbor[0],neighbor[1]))
-                 connected_addr.append(neighbor[0])
+                if connected_addr.count(neighbor[0])==0:
+                    neighborsocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    print((neighbor[0],neighbor[1]))
+
+                    neighborsocket.connect((neighbor[0],neighbor[1]))
+                    connected_addr.append(neighbor[0])
                    
     def start_peer_connection_thread(self):
         thread=threading.Thread(target=self.start_peer_connection_server)
