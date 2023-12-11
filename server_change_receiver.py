@@ -15,7 +15,7 @@ def remove_file_status(file_path):
     with server_connection.lock:
         del file_status_dict[file_path]
 
-def handle_receive_update(save_path, file_data):
+def handle_receive_update(save_path, file_data, client_socket):
     result, timestamp = check_file_status(save_path)
     
     if result:
@@ -34,20 +34,19 @@ def handle_receive_update(save_path, file_data):
             "result": "SUCCESS",
             "file_path": file_path
         }
-        #server_connection.send_to_client(client_socket,message_type,send_data)
-        
-        server_broadcast.update_broadcast_message(file_path)
-    # else:
-    #     # The only possibility for a failed change is that the file has been deleted
-    #     message_type = "confirmation"
-    #     send_data = {
-    #         "result": "FAIL",
-    #         "file_path": save_path
-    #     }
-    #     server_connection.send_to_client(client_socket,message_type,send_data)
+        server_connection.send_to_client(client_socket,message_type,send_data)
 
-def handle_receive_add(save_path, file_data):
-    handle_receive_update(save_path, file_data)
+    else:
+        # The only possibility for a failed change is that the file has been deleted
+        message_type = "confirmation"
+        send_data = {
+            "result": "FAIL",
+            "file_path": save_path
+        }
+        server_connection.send_to_client(client_socket,message_type,send_data)
+
+def handle_receive_add(save_path, file_data, client_socket):
+    handle_receive_update(save_path, file_data, client_socket)
 
 def handle_receive_delete(delete_path):
     result, timestamp = check_file_status(delete_path)
