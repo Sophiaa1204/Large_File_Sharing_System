@@ -17,7 +17,7 @@ def remove_file_status(file_path):
 def handle_receive_update(save_path, file_data, client_socket):
     result, timestamp = check_file_status(save_path)
     
-    if result:
+    if True:
         with open(save_path, 'wb') as file:
             file.write(file_data)
         print("File received completely.")
