@@ -63,9 +63,10 @@ def receive_from_client(client_socket):
 def recvall(sock, n):
     # Helper function to recv n bytes or return None if EOF is hit
     data = bytearray()
+    buffer_size = 4096  # Use a sensible buffer size
     while len(data) < n:
         print(f"remaining length is {n-len(data)}")
-        packet = sock.recv(n - len(data))
+        packet = sock.recv(min(buffer_size, n - len(data)))
         if not packet:
             print("return None")
             return None
