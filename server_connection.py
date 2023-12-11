@@ -75,7 +75,7 @@ def recvall(sock, n):
         # Optional: Update progress less frequently
         if len(data) % (buffer_size * 10) == 0:
             print(f"Received {len(data)} of {n} bytes")
-            
+
     print("IN RECVALL!")
     return data
 
@@ -86,6 +86,8 @@ def pre_process_message(server_socket,client_socket):
     raw_message_length = recvall(client_socket, 4)
     if not raw_message_length:
         return None
+    print("The raw message length is ")
+    print(struct.unpack('!I', raw_message_length))
     message_length = struct.unpack('!I', raw_message_length)[0]
     # Read the message data based on the message length
     print("Before serialize the main part!!!!")
