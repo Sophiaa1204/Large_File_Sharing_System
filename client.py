@@ -55,7 +55,7 @@ class Client:
           print(self.thisip)
           for neighbor in neighborarr:
                  self.neighbors.append(neighbor)
-          if len(self.neighbors)>2:
+          if len(self.neighbors)>=2:
               break
     def start_peer_connection_server(self):
         thisserverside=self.init_socket()
