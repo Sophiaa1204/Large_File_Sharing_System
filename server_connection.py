@@ -27,19 +27,12 @@ def handle_client_message(message, client_socket):
     print(message_type)
     print(data)
     print("__________")
-    if message_type == 'add':
+    if message_type == 0:
         file_path = data['file_path']
         file_data = data['file_data']
         server_change_receiver.handle_receive_add(file_path,file_data)
-    if message_type == 'small_update':
-        file_path = data['file_path']
-        file_data = data['file_data']
-        server_change_receiver.handle_receive_update(file_path,file_data,client_socket)
-    if message_type == 'large_update':
-        file_path = data['file_path']
-        file_data = data['file_data']
-        server_change_receiver.handle_receive_update(file_path,file_data)
-    if message_type == 'delete':
+    
+    if message_type == 1:
         file_path = data['file_path']
         server_change_receiver.handle_receive_delete(file_path)
     else:
@@ -102,8 +95,11 @@ def pre_process_message(server_socket,client_socket):
     if operation_type == 0:
         print("Before serialize the file size!!!!")
         file_data = recvall(client_socket, file_size)
+        file_data = file_data.decode()
         print("After serialize the file size!!!!")
         print(file_data)
+    
+    message = {'type':0, 'data':{'file_path':file_path,'file_data':file_data}}
     
 
     return ""
