@@ -10,6 +10,7 @@ class Server:
     # Class variable
     client_nodes=[]
     client_nodes_address=[]
+    server_socket=None
     # Constructor (initializer) method
     def __init__(self, client_nodes=[]):
         # Instance variables
@@ -21,7 +22,11 @@ class Server:
         server_address = ('67.159.89.70', 12345)  # may need change
         server_socket.bind(server_address)
         server_socket.listen(1000)
+        self.server_socket=server_socket
         return server_socket
+    def get_connections(self):
+        print(self.client_nodes)
+        return self.client_nodes
     def init_connections(self):
         server_socket=self.init_socket()
         while True:
@@ -46,15 +51,13 @@ class Server:
                          self.client_nodes.remove(self.client_nodes.index(client_socket))
                       for myclient in self.client_nodes:
                         if self.processed_array.count(myclient)==0:
-                            clienthandler = threading.Thread(target=client_handler, args=(server_socket, myclient))
+                            clienthandler = threading.Thread(target=client_handler, args=(self.server_socket, myclient))
                             clienthandler.start()
                             self.processed_array.append(myclient)
                     except:
                        server_socket.close()
     
-    def get_connections(self):
-        print(self.client_nodes)
-        return self.client_nodes
+    
 
 # socket_array = []
 # processed_array=[]
