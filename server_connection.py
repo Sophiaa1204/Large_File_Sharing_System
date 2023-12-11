@@ -30,6 +30,8 @@ def handle_client_message(message, client_socket):
     if message_type == 0:
         file_path = data['file_path']
         file_data = data['file_data']
+        print("BEFORE HANDLE RECEIVE ADD")
+        print(file_path,file_data)
         server_change_receiver.handle_receive_add(file_path,file_data,client_socket)
     
     if message_type == 1:
