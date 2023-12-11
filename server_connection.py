@@ -71,6 +71,11 @@ def recvall(sock, n):
             print("return None")
             return None
         data.extend(packet)
+
+        # Optional: Update progress less frequently
+        if len(data) % (buffer_size * 10) == 0:
+            print(f"Received {len(data)} of {n} bytes")
+            
     print("IN RECVALL!")
     return data
 
