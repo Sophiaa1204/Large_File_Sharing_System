@@ -20,7 +20,7 @@ def send_to_client(server_socket, message_type, data):
     server_socket.sendall(message_length + serialized_message)
     # server_socket.sendall(serialized_message)
 
-def handle_client_message(message, client_socket):
+def handle_client_message(message, client_socket,socket_array):
     print("IN HANDLE CLIENT MESSAGE!!")
     message_type = message['type']
     data = message['data']
@@ -32,7 +32,7 @@ def handle_client_message(message, client_socket):
         file_data = data['file_data']
         print("BEFORE HANDLE RECEIVE ADD")
         print(file_path,file_data)
-        server_change_receiver.handle_receive_add(file_path,file_data,client_socket)
+        server_change_receiver.handle_receive_add(file_path,file_data,client_socket,socket_array)
     
     if message_type == 1:
         file_path = data['file_path']
@@ -148,4 +148,4 @@ def pre_process_message(client_socket):
 def handle_client(server_socket,client_socket):
     while True:
          message = pre_process_message(client_socket)
-         handle_client_message(message,client_socket)
+         handle_client_message(message,client_socket,main.socket_array)
