@@ -74,7 +74,7 @@ def recvall(sock, n):
     print("IN RECVALL!")
     return data
 
-def pre_process_message(server_socket,client_socket):
+def pre_process_message(client_socket):
     # TIMEOUT_DURATION = 100
 
     # server_socket.settimeout(TIMEOUT_DURATION)

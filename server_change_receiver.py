@@ -29,6 +29,7 @@ def handle_receive_update(save_path, file_data, client_socket):
             update_file_status(file_path)
 
     print("Until the end of handle received update!!!")
+    server_broadcast.update_broadcast_message(client_socket,file_path)
 
 
     #     message_type = "confirmation"

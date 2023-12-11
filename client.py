@@ -8,6 +8,8 @@ import hashlib
 import struct
 import os
 from xxlimited import new
+import server_connection
+
 class Client:
     # Class variable
     server_ip=""
@@ -162,36 +164,23 @@ class Client:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
        return hash_md5.hexdigest()
+    
     def client_receive_server_updates(self):
-        if self.server_socket==None:
-            print("A?")
-            return
-        while True:
-            print("B???")
-            operation_type_s=self.server_socket.recv(1024)
-            print("C???")
-            operation_type=pickle.loads(operation_type_s)
-            if type(operation_type)!=type(0):
-                continue
-            print("o:"+str(operation_type))
-            file_size_s=self.server_socket.recv(1024)
-            file_size=pickle.loads(file_size_s)
-            print("s"+str(file_size))
-            file_name_s=self.server_socket.recv(1024)
-            file_name=pickle.loads(file_name_s)
-            print(file_name)
-            f=open(file_name,'wb')
-            current_size=0
-            recv_len=1024
-            while True:
-               filedata=self.server_socket.recv(recv_len)
-               current_size+=len(filedata)
-               f.write(filedata)
-               if current_size==int(file_size):
-                   f.close()
-                   break
-               if current_size+recv_len>=int(file_size):
-                   recv_len=file_size-current_size
+        message = server_connection.pre_process_message(self.this_socket)
+        print("IN HANDLE CLIENT MESSAGE!!CLIENT")
+        message_type = message['type']
+        data = message['data']
+        print(message_type)
+        print(data)
+        print("__________")
+        if message_type == 0:
+            file_path = data['file_path']
+            file_data = data['file_data']
+            print("BEFORE HANDLE RECEIVE ADD CLIENG")
+            print(file_path,file_data)
+            with open(file_path, 'wb') as file:
+                file.write(file_data)
+        print("File received completely.")
                 
     def start_file_monitor(self,directory_path, interval=0.5):
        current_list=os.listdir(directory_path)
