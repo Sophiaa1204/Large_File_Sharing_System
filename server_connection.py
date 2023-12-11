@@ -97,7 +97,6 @@ def pre_process_message(server_socket,client_socket):
     if operation_type == 0:
         print("Before serialize the file size!!!!")
         file_data = recvall(client_socket, file_size)
-        file_data = file_data.decode()
         print("After serialize the file size!!!!")
         print(file_data)
     
