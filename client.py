@@ -67,7 +67,7 @@ class Client:
             peer_socket,peer_addr=thisserverside.accept()
             print(peer_addr)
             with self.lock:
-                self.connected_addr(peer_addr)
+                self.connected_addr.append(peer_addr)
     def start_peer_connection_client(self):
        print("IN Start_peer_connection_client")
        while True:
