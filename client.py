@@ -87,6 +87,9 @@ class Client:
         print("IN START THREADS")
         thread=threading.Thread(target=self.start_peer_connection_server)
         thread.start()
+        # Pause for a specified number of seconds to avoid double connection
+        pause_duration = 5  # Pause for 5 seconds, for example
+        time.sleep(pause_duration)
         thread2=threading.Thread(target=self.start_peer_connection_client)
         thread2.start()
     def notify_server(self, file_path):
