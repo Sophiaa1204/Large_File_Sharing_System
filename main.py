@@ -51,7 +51,7 @@ class Server:
                          self.client_nodes.remove(self.client_nodes.index(client_socket))
                       for myclient in self.client_nodes:
                         if self.processed_array.count(myclient)==0:
-                            clienthandler = threading.Thread(target=client_handler, args=(self.server_socket, myclient))
+                            clienthandler = threading.Thread(target=client_handler, args=(self, myclient))
                             clienthandler.start()
                             self.processed_array.append(myclient)
                     except:
