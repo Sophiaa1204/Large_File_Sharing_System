@@ -66,6 +66,7 @@ def recvall(sock, n):
     while len(data) < n:
         packet = sock.recv(n - len(data))
         if not packet:
+            print("return None")
             return None
         data.extend(packet)
     print("IN RECVALL!")
@@ -80,7 +81,9 @@ def pre_process_message(server_socket,client_socket):
         return None
     message_length = struct.unpack('!I', raw_message_length)[0]
     # Read the message data based on the message length
+    print("Before serialize the main part!!!!")
     serialized_message = recvall(client_socket, message_length)
+    print("After serialize the main part!!!!")
     message = pickle.loads(serialized_message)
     print(message)
     message_type = message['type']
