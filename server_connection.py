@@ -99,7 +99,7 @@ def pre_process_message(server_socket,client_socket):
     operation_type, file_size = struct.unpack('!IQ', message_data[:12])
     file_path = message_data[12:].decode()  # assuming the rest of the message is the file path
     print(operation_type,file_size,file_path)
-    if operation_type == "0":
+    if operation_type == 0:
         print("Before serialize the file size!!!!")
         file_data = recvall(client_socket, file_size)
         print("After serialize the file size!!!!")
