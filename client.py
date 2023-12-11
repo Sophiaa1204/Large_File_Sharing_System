@@ -79,6 +79,7 @@ class Client:
 
                    
     def start_peer_connection_thread(self):
+        print("IN START THREADS")
         thread=threading.Thread(target=self.start_peer_connection_server)
         thread.start()
         thread2=threading.Thread(target=self.start_peer_connection_client)
