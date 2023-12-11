@@ -62,6 +62,8 @@ class Client:
         print("bind sucesss!")
         while True:
             peer_socket,peer_addr=thisserverside.accept()
+            print("IN Start_peer_connection_server")
+            print(peer_addr)
     def start_peer_connection_client(self):
        connected_addr=[]
        while True:
