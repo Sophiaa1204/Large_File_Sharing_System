@@ -21,8 +21,12 @@ def send_to_client(server_socket, message_type, data):
     # server_socket.sendall(serialized_message)
 
 def handle_client_message(message, client_socket):
+    print("IN HANDLE CLIENT MESSAGE!!")
     message_type = message['type']
     data = message['data']
+    print(message_type)
+    print(data)
+    print("__________")
     if message_type == 'add':
         file_path = data['file_path']
         file_data = data['file_data']
