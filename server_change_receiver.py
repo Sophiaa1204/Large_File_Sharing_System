@@ -30,7 +30,10 @@ def handle_receive_update(save_path, file_data, client_socket,socket_array):
             update_file_status(file_path)
         else:
             update_file_status(file_path)
-        server_broadcast.update_broadcast_message(client_socket,file_path)
+        
+        for i in socket_array:
+            if i != client_socket:
+                server_broadcast.update_broadcast_message(i,file_path)
 
     
     
