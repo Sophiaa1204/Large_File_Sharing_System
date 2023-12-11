@@ -1,30 +1,43 @@
 import socket
 import threading
 import os
+import struct
 
 import server_connection
 import main
-def update_broadcast_message(file_path):
-    file_size = os.path.getsize(file_path)
-    max_size = 1024 * 1024 * 5
+def update_broadcast_message(server_socket,file_path):
+    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+            operation_type = 0  # 0 for add/update
+            file_size = os.path.getsize(file_path)
+            file_path_encoded = file_path.encode()
 
-    if file_size > max_size:
-        with server_connection.lock:
-            for conn in main.socket_array:
-                try:
-                    send_chunked_data_over_existing_connection(conn, file_path)
-                except Exception as e:
-                    print("Error sending message to client: {}".format(e))
-        
+            # Prepare the message without the file content
+            message_without_file = struct.pack('!I', operation_type) + struct.pack('!Q', file_size) + file_path_encoded
+            message_length = len(message_without_file)
+
+            # Send the message length and the message
+            server_socket.sendall(struct.pack('!I', message_length))
+            server_socket.sendall(message_without_file)
+
+            # Send the file data
+            with open(file_path, 'rb') as file:
+                while True:
+                    chunk = file.read(1024)
+                    if not chunk:
+                        break
+                    server_socket.sendall(chunk)
     else:
-        with server_connection.lock:
-            for conn in main.socket_array:
-                try:
-                    send_data_over_existing_connection(conn, file_path)
-                    print("send successfullly!!!!!!")
-                    print(len(main.socket_array))
-                except Exception as e:
-                    print("Error sending message to client: {}".format(e))
+        # Send delete operation
+        operation_type = 1  # 1 for delete
+        file_path_encoded = file_path.encode()
+        message = struct.pack('!I', operation_type) + struct.pack('!Q', 0) + file_path_encoded
+        message_length = len(message)
+
+        # Send the message length and the message
+        server_socket.sendall(struct.pack('!I', message_length))
+        server_socket.sendall(message)
+
+    
 
 def delete_broadcast_message(file_path):
     with server_connection.lock:

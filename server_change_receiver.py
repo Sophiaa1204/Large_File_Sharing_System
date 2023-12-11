@@ -35,6 +35,7 @@ def handle_receive_update(save_path, file_data):
             "file_path": file_path
         }
         #server_connection.send_to_client(client_socket,message_type,send_data)
+        
         server_broadcast.update_broadcast_message(file_path)
     # else:
     #     # The only possibility for a failed change is that the file has been deleted
