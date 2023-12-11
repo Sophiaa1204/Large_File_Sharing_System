@@ -19,6 +19,7 @@ class Client:
     neighbors=[]
     server_socket=None
     connected_addr=[]
+    received=[]
     # Constructor (initializer) method
     def __init__(self, server_ip,server_port,thisip,thisport):
         # Instance variables
@@ -180,7 +181,9 @@ class Client:
             print(file_path,file_data)
             with open(file_path, 'wb') as file:
                 file.write(file_data)
-        print("File received completely.")
+        with self.lock:
+            self.received.append(file_path)
+        print(f"File received completely.Received file list is {self.received}")
                 
     def start_file_monitor(self,directory_path, interval=0.5):
        current_list=os.listdir(directory_path)
@@ -189,7 +192,14 @@ class Client:
           current_md5_list.append(self.calculate_md5("share/"+file))
        while True:
            time.sleep(2)
-           new_list=os.listdir(directory_path)
+           new_list_unfiltered=os.listdir(directory_path)
+           new_list = []
+           for file in new_list_unfiltered:
+               if ("share/"+file) in self.received:
+                   print("share/"+file+"in received")
+                   continue
+               else:
+                   new_list.append(file)
            if len(new_list)==len(current_list):
                current_md5_list_new=[]
                for file in new_list:
