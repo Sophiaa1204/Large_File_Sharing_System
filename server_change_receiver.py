@@ -20,8 +20,7 @@ def handle_receive_update(save_path, file_data, client_socket):
     
     if True:
         with open(save_path, 'wb') as file:
-            with server_connection.lock:
-                file.write(file_data)
+            file.write(file_data)
         print("File received completely.")
         # update the file status
         file_path = save_path
