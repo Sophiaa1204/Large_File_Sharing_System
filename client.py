@@ -23,6 +23,7 @@ class Client:
         self.server_port=server_port
         self.thisip=thisip
         self.thisport=thisport
+        self.lock = threading.Lock()
     # Instance method
     def init_socket(self):
         this_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -65,18 +66,20 @@ class Client:
             peer_socket,peer_addr=thisserverside.accept()
             print("IN Start_peer_connection_server")
             print(peer_addr)
-            self.connected_addr(peer_addr)
+            with self.lock:
+                self.connected_addr(peer_addr)
     def start_peer_connection_client(self):
        
        while True:
         for neighbor in self.neighbors:
             if neighbor[0]!=self.thisip:
-                if self.connected_addr.count(neighbor[0])==0:
-                    neighborsocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    print((neighbor[0],neighbor[1]))
+                with self.lock:
+                    if self.connected_addr.count(neighbor[0])==0:
+                        neighborsocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        print((neighbor[0],neighbor[1]))
                    
-                    neighborsocket.connect((neighbor[0],neighbor[1]))
-                    self.connected_addr.append(neighbor[0])
+                        neighborsocket.connect((neighbor[0],neighbor[1]))
+                        self.connected_addr.append(neighbor[0])
                     
 
                    
