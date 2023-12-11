@@ -99,10 +99,13 @@ def pre_process_message(server_socket,client_socket):
         print("After serialize the file size!!!!")
         print(file_data)
     
-    message = {'type':0, 'data':{'file_path':file_path,'file_data':file_data}}
+        message = {'type':0, 'data':{'file_path':file_path,'file_data':file_data}}
+    else:
+        message = {'type':1, 'data':{'file_path':file_path,'file_data':None}}
     
-
-    return ""
+    print("The message is")
+    print(message)
+    return message
 
 # to avoid timeout
 # def pre_process_message(server_socket,client_socket):
