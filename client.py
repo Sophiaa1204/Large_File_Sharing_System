@@ -15,6 +15,7 @@ class Client:
     thisport=23456
     neighbors=[]
     server_socket=None
+    connected_addr=[]
     # Constructor (initializer) method
     def __init__(self, server_ip,server_port,thisip,thisport):
         # Instance variables
@@ -64,17 +65,18 @@ class Client:
             peer_socket,peer_addr=thisserverside.accept()
             print("IN Start_peer_connection_server")
             print(peer_addr)
+            self.connected_addr(peer_addr)
     def start_peer_connection_client(self):
-       connected_addr=[]
+       
        while True:
         for neighbor in self.neighbors:
             if neighbor[0]!=self.thisip:
-                if connected_addr.count(neighbor[0])==0:
+                if self.connected_addr.count(neighbor[0])==0:
                     neighborsocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     print((neighbor[0],neighbor[1]))
                    
                     neighborsocket.connect((neighbor[0],neighbor[1]))
-                    connected_addr.append(neighbor[0])
+                    self.connected_addr.append(neighbor[0])
                     
 
                    
