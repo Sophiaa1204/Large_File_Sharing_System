@@ -25,7 +25,7 @@ class Client:
     # Instance method
     def init_socket(self):
         this_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        this_address = ("0.0.0.0", self.thisport)  # may need change
+        this_address = ("152.3.52.38", self.thisport)  # may need change
         this_socket.bind(this_address)
         this_socket.listen(1000)
         return this_socket
@@ -70,11 +70,10 @@ class Client:
                 if connected_addr.count(neighbor[0])==0:
                     neighborsocket=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     print((neighbor[0],neighbor[1]))
-                    try:
-                        neighborsocket.connect((neighbor[0],neighbor[1]))
-                        connected_addr.append(neighbor[0])
-                    except Exception as e:
-                        print(f"Can't connect with the neighbor {e}")
+                   
+                    neighborsocket.connect((neighbor[0],neighbor[1]))
+                    connected_addr.append(neighbor[0])
+                    
 
                    
     def start_peer_connection_thread(self):
