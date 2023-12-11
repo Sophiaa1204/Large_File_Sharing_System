@@ -9,11 +9,14 @@ import os
 global socket_array
 global processed_array
 if __name__ == '__main__':
-    socket_array = []
-    processed_array=[]
+    # socket_array = []
+    # processed_array=[]
     if len(sys.argv) == 1:  # The code for server side
-        # socket_array = []
-        # processed_array=[]
+        socket_array = []
+        processed_array=[]
+
+        def get_connections():
+           return processed_array
 
         def handle_connection(server_socket):
             client_socket_dic = []  # record ip and port only,through recv from client,which is ip port

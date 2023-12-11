@@ -148,5 +148,5 @@ def pre_process_message(client_socket):
 def handle_client(server_socket,client_socket):
     while True:
          message = pre_process_message(client_socket)
-         print(main.processed_array)
-         handle_client_message(message,client_socket,main.processed_array)
+         print(main.get_connections)
+         handle_client_message(message,client_socket,main.get_connections)
