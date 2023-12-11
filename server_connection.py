@@ -86,28 +86,22 @@ def pre_process_message(server_socket,client_socket):
     raw_message_length = recvall(client_socket, 4)
     if not raw_message_length:
         return None
-    print("The raw message length is ")
-    print(struct.unpack('!I', raw_message_length))
+   
     message_length = struct.unpack('!I', raw_message_length)[0]
+    print("The raw message length is:", message_length)
+
     # Read the message data based on the message length
     print("Before serialize the main part!!!!")
-    serialized_message = recvall(client_socket, message_length)
+    message_data = recvall(client_socket, message_length)
     print("After serialize the main part!!!!")
-    message = pickle.loads(serialized_message)
-    print(message)
-    message_type = message['type']
-    if message_type in ['small_update', 'large_update']:
+    if message_data is None:
+        return None
+    operation_type, file_size = struct.unpack('!IQ', message_data[:12])
+    file_path = message_data[12:].decode()  # assuming the rest of the message is the file path
 
-        file_path = message['data']['file_path']
-        message['data'] = {
-            "file_path": file_path,
-            "file_data": message,
-        }
+    print(operation_type,file_size,file_path)
 
-    print("SUCCESS!!BEFORE SENDING DATA")
-    print(message)
-
-    return message
+    return ""
 
 # to avoid timeout
 # def pre_process_message(server_socket,client_socket):
