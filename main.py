@@ -45,7 +45,7 @@ def handle_connection(server_socket):
                        server_socket.close()
 
 def get_connections():
-           return processed_array
+           return socket_array
 
 if __name__ == '__main__':
     # socket_array = []
