@@ -18,7 +18,7 @@ def remove_file_status(file_path):
 def handle_receive_update(save_path, file_data, client_socket):
     result, timestamp = check_file_status(save_path)
     
-    if result:
+    if True:
         with open(save_path, 'wb') as file:
             with server_connection.lock:
                 file.write(file_data)
@@ -62,5 +62,5 @@ def handle_receive_delete(delete_path):
 def check_file_status(file_path):
     if file_path in file_status_dict:
         operation_type, timestamp = file_status_dict[file_path]
-        return True, operation_type, timestamp
-    return False, None, None
+        return True, timestamp
+    return False, None
