@@ -147,5 +147,5 @@ def pre_process_message(client_socket):
 
 def handle_client(server_socket,client_socket):
     while True:
-         message = pre_process_message(server_socket,client_socket)
+         message = pre_process_message(client_socket)
          handle_client_message(message,client_socket)
