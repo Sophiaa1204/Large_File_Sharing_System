@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
 
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_address = ('152.3.65.150', 12345)  # may need change
+        server_address = ('67.159.89.70', 12345)  # may need change
         server_socket.bind(server_address)
         server_socket.listen(1000)
         connectionhandler = threading.Thread(target=handle_connection,args=(server_socket,))
