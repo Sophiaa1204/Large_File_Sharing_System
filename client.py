@@ -5,6 +5,7 @@ import socket
 import sys
 import time
 import hashlib
+import struct
 import os
 from xxlimited import new
 class Client:
@@ -93,35 +94,67 @@ class Client:
         thread2=threading.Thread(target=self.start_peer_connection_client)
         thread2.start()
     def notify_server(self, file_path):
-    # operation type 0 add/update 1 delete
-      print("send once!!!!!")
-      if self.server_socket is None:
-         return
-      if os.path.exists(file_path):
-        if os.path.getsize(file_path)==0:
-            return
-        self.server_socket.send(pickle.dumps(0))
-        file_size = os.path.getsize(file_path)
-        self.server_socket.send(pickle.dumps(file_size))
-        print("size: " + str(file_size))
-        self.server_socket.send(pickle.dumps(file_path))
-        print("file path:"+file_path)
-        # Read and send the file data in 1024-byte chunks
-        all_length=0
-        with open(file_path, 'rb') as file:
-            chunk_size = 1024
-            while True:
-                chunk = file.read(chunk_size)
-                self.server_socket.send(chunk)
-                all_length+=len(chunk)
-                if all_length>=file_size:
-                    file.close()
-                    break
-      else:
-        self.server_socket.send(pickle.dumps(1))
-        file_size =0
-        self.server_socket.send(pickle.dumps(file_size))
-        self.server_socket.send(pickle.dumps(file_path))
+        if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+            operation_type = 0  # 0 for add/update
+            file_size = os.path.getsize(file_path)
+            file_path_encoded = file_path.encode()
+
+            # Prepare the message without the file content
+            message_without_file = struct.pack('!I', operation_type) + struct.pack('!Q', file_size) + file_path_encoded
+            message_length = len(message_without_file)
+
+            # Send the message length and the message
+            self.server_socket.sendall(struct.pack('!I', message_length))
+            self.server_socket.sendall(message_without_file)
+
+            # Send the file data
+            with open(file_path, 'rb') as file:
+                while True:
+                    chunk = file.read(1024)
+                    if not chunk:
+                        break
+                    self.server_socket.sendall(chunk)
+        else:
+            # Send delete operation
+            operation_type = 1  # 1 for delete
+            file_path_encoded = file_path.encode()
+            message = struct.pack('!I', operation_type) + struct.pack('!Q', 0) + file_path_encoded
+            message_length = len(message)
+
+            # Send the message length and the message
+            self.server_socket.sendall(struct.pack('!I', message_length))
+            self.server_socket.sendall(message)
+
+    # # operation type 0 add/update 1 delete
+    #   print("send once!!!!!")
+    #   if self.server_socket is None:
+    #      return
+    #   if os.path.exists(file_path):
+    #     if os.path.getsize(file_path)==0:
+    #         return
+    #     self.server_socket.send(pickle.dumps(0))
+    #     file_size = os.path.getsize(file_path)
+    #     self.server_socket.send(pickle.dumps(file_size))
+    #     print("size: " + str(file_size))
+    #     self.server_socket.send(pickle.dumps(file_path))
+    #     print("file path:"+file_path)
+    #     # Read and send the file data in 1024-byte chunks
+    #     all_length=0
+    #     with open(file_path, 'rb') as file:
+    #         chunk_size = 1024
+    #         while True:
+    #             chunk = file.read(chunk_size)
+    #             self.server_socket.send(chunk)
+    #             all_length+=len(chunk)
+    #             if all_length>=file_size:
+    #                 file.close()
+    #                 break
+    #   else:
+    #     self.server_socket.send(pickle.dumps(1))
+    #     file_size =0
+    #     self.server_socket.send(pickle.dumps(file_size))
+    #     self.server_socket.send(pickle.dumps(file_path))
+
     def calculate_md5(self,file_path):
        """Calculate the MD5 hash of a file."""
        hash_md5 = hashlib.md5()
