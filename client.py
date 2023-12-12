@@ -167,33 +167,34 @@ class Client:
        return hash_md5.hexdigest()
     
     def client_receive_server_updates(self):
-        print("IN CLIENT RECEIVE SERVER UPDATE")
-        message = server_connection.pre_process_message(self.server_socket)
-        print("IN HANDLE CLIENT MESSAGE!!CLIENT")
-        message_type = message['type']
-        data = message['data']
-        print(message_type)
-        print(data)
-        print("__________")
-        if message_type == 0:
-            file_path = data['file_path']
-            file_data = data['file_data']
-            print("BEFORE HANDLE RECEIVE ADD CLIENG")
-            print(file_path,file_data)
-            with open(file_path, 'wb') as file:
-                file.write(file_data)
-            with self.lock:
-                self.received.append(file_path)
-        if message_type == 1:
-            file_path = data['file_path']
-            print("BEFORE REMOVE FILE!")
-            if os.path.exists(file_path):
-                os.remove(file_path)
-                print("SUCCESSFULLY REMOVE AT CLIENT SIDE")
-                self.received.remove(data)
-        
-        print(f"File received completely.Received file list is {self.received}")
-                
+        while True:
+            print("IN CLIENT RECEIVE SERVER UPDATE")
+            message = server_connection.pre_process_message(self.server_socket)
+            print("IN HANDLE CLIENT MESSAGE!!CLIENT")
+            message_type = message['type']
+            data = message['data']
+            print(message_type)
+            print(data)
+            print("__________")
+            if message_type == 0:
+                file_path = data['file_path']
+                file_data = data['file_data']
+                print("BEFORE HANDLE RECEIVE ADD CLIENG")
+                print(file_path,file_data)
+                with open(file_path, 'wb') as file:
+                    file.write(file_data)
+                with self.lock:
+                    self.received.append(file_path)
+            if message_type == 1:
+                file_path = data['file_path']
+                print("BEFORE REMOVE FILE!")
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    print("SUCCESSFULLY REMOVE AT CLIENT SIDE")
+                    self.received.remove(data)
+            
+            print(f"File received completely.Received file list is {self.received}")
+                    
     def start_file_monitor(self,directory_path, interval=0.5):
        current_list=os.listdir(directory_path)
        current_md5_list=[]
