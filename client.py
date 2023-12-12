@@ -181,14 +181,16 @@ class Client:
             print(file_path,file_data)
             with open(file_path, 'wb') as file:
                 file.write(file_data)
+            with self.lock:
+                self.received.append(file_path)
         else:
             file_path = data['file_path']
+            print("BEFORE REMOVE FILE!")
             if os.path.exists(file_path):
-                os.remove()
+                os.remove(file_path)
                 print("SUCCESSFULLY REMOVE AT CLIENT SIDE")
                 self.received.remove(data)
-        with self.lock:
-            self.received.append(file_path)
+        
         print(f"File received completely.Received file list is {self.received}")
                 
     def start_file_monitor(self,directory_path, interval=0.5):
