@@ -102,6 +102,7 @@ def pre_process_message(client_socket):
     
         message = {'type':0, 'data':{'file_path':file_path,'file_data':file_data}}
     else:
+        print("BEFORE THE DELETE MESSAGE SENT OUT!")
         message = {'type':1, 'data':{'file_path':file_path,'file_data':None}}
     
     print("The message is")

@@ -167,6 +167,7 @@ class Client:
        return hash_md5.hexdigest()
     
     def client_receive_server_updates(self):
+        print("IN CLIENT RECEIVE SERVER UPDATE")
         message = server_connection.pre_process_message(self.server_socket)
         print("IN HANDLE CLIENT MESSAGE!!CLIENT")
         message_type = message['type']
