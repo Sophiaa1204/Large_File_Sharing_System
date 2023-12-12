@@ -212,6 +212,7 @@ class Client:
                current_list=new_list
                current_md5_list=current_md5_list_new
            else:
+               new_list = new_list_unfiltered
                if len(new_list)<len(current_list):
                   for file_d in current_list:
                       if new_list.count(file_d)==0:
