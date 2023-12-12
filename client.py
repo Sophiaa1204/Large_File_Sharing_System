@@ -183,7 +183,7 @@ class Client:
                 file.write(file_data)
             with self.lock:
                 self.received.append(file_path)
-        else:
+        if message_type == 1:
             file_path = data['file_path']
             print("BEFORE REMOVE FILE!")
             if os.path.exists(file_path):
@@ -204,7 +204,7 @@ class Client:
            new_list = []
            for file in new_list_unfiltered:
                if ("share/"+file) in self.received:
-                   print("share/"+file+"in received")
+                #    print("share/"+file+"in received")
                    continue
                else:
                    new_list.append(file)
