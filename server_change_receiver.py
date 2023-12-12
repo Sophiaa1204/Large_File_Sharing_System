@@ -59,10 +59,11 @@ def handle_receive_add(save_path, file_data, client_socket,socket_array):
     handle_receive_update(save_path, file_data, client_socket,socket_array)
 
 def handle_receive_delete(delete_path,client_socket,socket_array):
+    print("IN HANDLE RECEIVE DELETE!!!")
     result, timestamp = check_file_status(delete_path)
 
     if True:
-        if not os.path.exists(delete_path):
+        # if not os.path.exists(delete_path):
             os.remove(delete_path)
             remove_file_status(delete_path)
             print("SUCCESSFULY DELETE!!!")
