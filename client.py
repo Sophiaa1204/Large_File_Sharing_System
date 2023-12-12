@@ -191,7 +191,7 @@ class Client:
                 if os.path.exists(file_path):
                     os.remove(file_path)
                     print("SUCCESSFULLY REMOVE AT CLIENT SIDE")
-                    self.received.remove(data)
+                    self.received.remove(file_path)
             
             print(f"File received completely.Received file list is {self.received}")
                     
