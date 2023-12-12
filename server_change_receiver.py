@@ -58,7 +58,7 @@ def handle_receive_update(save_path, file_data, client_socket,socket_array):
 def handle_receive_add(save_path, file_data, client_socket,socket_array):
     handle_receive_update(save_path, file_data, client_socket,socket_array)
 
-def handle_receive_delete(delete_path):
+def handle_receive_delete(delete_path,client_socket,socket_array):
     result, timestamp = check_file_status(delete_path)
 
     if result:
@@ -66,7 +66,9 @@ def handle_receive_delete(delete_path):
             with server_connection.lock:
                 os.remove(delete_path)
             remove_file_status(delete_path)
-            server_broadcast.delete_broadcast_message(delete_path)
+            for i in socket_array:
+                if i != client_socket:
+                    server_broadcast.update_broadcast_message(i,delete_path)
 
 
 def check_file_status(file_path):

@@ -36,7 +36,7 @@ def handle_client_message(message, client_socket,socket_array):
     
     if message_type == 1:
         file_path = data['file_path']
-        server_change_receiver.handle_receive_delete(file_path)
+        server_change_receiver.handle_receive_delete(file_path,client_socket,socket_array)
     else:
         print("Unknown message type received")
 
@@ -149,5 +149,5 @@ def handle_client(server_socket,client_socket):
     while True:
          message = pre_process_message(client_socket)
          connections = server_socket.get_connections()
-         print(connections)
+        #  print(connections)
          handle_client_message(message,client_socket,connections)
