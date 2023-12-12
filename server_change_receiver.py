@@ -73,6 +73,6 @@ def handle_receive_delete(delete_path,client_socket,socket_array):
 
 def check_file_status(file_path):
     if file_path in file_status_dict:
-        operation_type, timestamp = file_status_dict[file_path]
-        return True, timestamp
+        operation_type = file_status_dict[file_path]
+        return True, None
     return False, None
