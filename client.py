@@ -201,6 +201,7 @@ class Client:
                else:
                    new_list.append(file)
            if len(new_list)==len(current_list):
+               # update
                current_md5_list_new=[]
                for file in new_list:
                  current_md5_list_new.append(self.calculate_md5("share/"+file))
@@ -212,14 +213,16 @@ class Client:
                current_list=new_list
                current_md5_list=current_md5_list_new
            else:
-               new_list = new_list_unfiltered
+               # delete
                if len(new_list)<len(current_list):
+                  new_list = new_list_unfiltered
                   for file_d in current_list:
                       if new_list.count(file_d)==0:
                           servernotifythread=threading.Thread(target=self.notify_server,args=("share/"+file_d,))
                           servernotifythread.start()
                           print("file changed B")
                else:
+                # add
                    for file_a in new_list:
                        if current_list.count(file_a)==0:
                            servernotifythread=threading.Thread(target=self.notify_server,args=("share/"+file_a,))
