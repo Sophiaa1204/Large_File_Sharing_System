@@ -181,6 +181,12 @@ class Client:
             print(file_path,file_data)
             with open(file_path, 'wb') as file:
                 file.write(file_data)
+        else:
+            file_path = data['file_path']
+            if os.path.exists(file_path):
+                os.remove()
+                print("SUCCESSFULLY REMOVE AT CLIENT SIDE")
+                self.received.remove(data)
         with self.lock:
             self.received.append(file_path)
         print(f"File received completely.Received file list is {self.received}")
