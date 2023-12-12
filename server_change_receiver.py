@@ -62,9 +62,10 @@ def handle_receive_delete(delete_path,client_socket,socket_array):
     result, timestamp = check_file_status(delete_path)
 
     if result:
-        if os.path.exists(delete_path):
+        if not os.path.exists(delete_path):
             os.remove(delete_path)
             remove_file_status(delete_path)
+            print("SUCCESSFULY DELETE!!!")
             for i in socket_array:
                 if i != client_socket:
                     server_broadcast.update_broadcast_message(i,delete_path)

@@ -47,9 +47,10 @@ def handle_receive_add(save_path, file_data):
 def handle_receive_delete(delete_path):
     result, timestamp = check_file_status(delete_path)
 
-    if result:
+    if True:
         if os.path.exists(delete_path):
             os.remove(delete_path)
+            print("Remove Successfully!")
             remove_file_status(delete_path)
             log_server_operation(delete_path, "added", None)
 

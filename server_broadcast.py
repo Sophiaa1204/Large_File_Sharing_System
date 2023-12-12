@@ -36,6 +36,7 @@ def update_broadcast_message(server_socket,file_path):
         # Send the message length and the message
         server_socket.sendall(struct.pack('!I', message_length))
         server_socket.sendall(message)
+        print("SEND OUT THE DELETE REQUEST!!!")
 
     
 
