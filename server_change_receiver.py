@@ -63,8 +63,7 @@ def handle_receive_delete(delete_path,client_socket,socket_array):
 
     if result:
         if os.path.exists(delete_path):
-            with server_connection.lock:
-                os.remove(delete_path)
+            os.remove(delete_path)
             remove_file_status(delete_path)
             for i in socket_array:
                 if i != client_socket:
