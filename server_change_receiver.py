@@ -11,7 +11,7 @@ def update_file_status(file_path):
     file_status_dict[file_path] = current_time
 
 def remove_file_status(file_path):
-    with server_connection.lock:
+    # with server_connection.lock:
         del file_status_dict[file_path]
 
 def handle_receive_update(save_path, file_data, client_socket,socket_array):
